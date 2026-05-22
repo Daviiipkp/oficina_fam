@@ -1,17 +1,17 @@
-package org.daviipkp;
+package org.daviipkp.oficina_fam;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.daviipkp.App.CheckInRequest;
+import org.daviipkp.oficina_fam.Main.CheckInRequest;
 
 import io.javalin.Javalin;
 
-public class App {
+public class Main {
 
     private static final Map<String, String> users = new ConcurrentHashMap<>();
 
-    public static void main( String[] args ) {
+    public static void main(String[] args) {
         System.out.println("Initializing!");
         System.out.println("Trying to initialize endpoints...");
         initializeServer();
