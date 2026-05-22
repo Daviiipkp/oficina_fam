@@ -18,7 +18,7 @@ public class App {
         System.out.println("Done!");
     }
 
-    public void initializeServer() {
+    public static void initializeServer() {
         Javalin j = Javalin.create(config -> {
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(rule -> rule.anyHost());
