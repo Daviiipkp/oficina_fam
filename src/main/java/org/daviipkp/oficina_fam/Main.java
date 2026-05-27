@@ -24,6 +24,7 @@ public class Main {
 
     public static void initializeServer() {
         Javalin j = Javalin.create(config -> {
+            config.bundledPlugins.enableDevLogging();
             config.bundledPlugins.enableCors(cors -> {
                 cors.addRule(rule -> rule.anyHost());
             });
