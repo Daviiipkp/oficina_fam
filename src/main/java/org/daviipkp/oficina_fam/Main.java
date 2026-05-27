@@ -77,6 +77,9 @@ public class Main {
             config.routes.get("/clear", ctx -> {
                 checkins.clear();
                 abobora_winner = null;
+                melancia_winner = null;
+                tomate_desafios.clear();
+                tomate_winners.clear();
             });
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
@@ -142,7 +145,7 @@ public class Main {
 
                 IntChallenge sub = ctx.bodyAsClass(IntChallenge.class);
                 
-                if ("1024".equals(sub.resposta)) {
+                if (sub.resposta() == 1024) {
                     melancia_winner = sub.nome;
                     melanciaClients.forEach(client -> client.sendEvent("winner", melancia_winner));
                     ctx.result("Correto! Você venceu o Desafio Melancia.");
