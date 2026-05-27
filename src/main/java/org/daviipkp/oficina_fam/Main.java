@@ -5,6 +5,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import org.daviipkp.oficina_fam.Main.CheckInRequest;
+import org.daviipkp.oficina_fam.Main.IntChallenge;
 
 import io.javalin.Javalin;
 import io.javalin.http.sse.SseClient;
@@ -39,7 +40,7 @@ public class Main {
                     ctx.result("tu já fez check-in macho");
                     return;
                 }
-                users.put(ctx.ip(), req.nick);
+                users.put(ctx.ip(), req.nick());
                 sseClients.forEach((client) -> {
                     client.sendEvent("users", users.values());
                 });
@@ -53,10 +54,10 @@ public class Main {
                     return;
                 }
                 String user = users.get(ctx.ip());
-                if(req.resposta == 13) {
+                if(req.resposta() == 13) {
                     ctx.result("boa! desafio concluído!");
                 }else{
-                    ctx.result("sua resposta \"" + req.resposta + "\" está incorreta.");
+                    ctx.result("sua resposta \"" + req.resposta() + "\" está incorreta.");
                 }
             });
             
@@ -78,12 +79,8 @@ public class Main {
         }).start(7070);
     }
 
-    class CheckInRequest {
-        public String nick;
-    }
+    public record CheckInRequest(String nick) {}
 
-    class IntChallenge{
-        public int resposta;
-    }
+    public record IntChallenge(int resposta) {}
 
 }
