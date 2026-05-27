@@ -38,11 +38,7 @@ public class Main {
             });
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
-                if(users.keySet().contains(ctx.ip())) {
-                    ctx.result("Tentativa com IP duplicado! nome: " + req.nick() + ", IP: " + ctx.ip());
-                    return;
-                }
-                users.put(ctx.ip(), req.nick());
+                users.put(ctx.ip(), req.nome());
                 sseClients.forEach((client) -> {
                     client.sendEvent("users", users.values());
                 });
@@ -63,7 +59,7 @@ public class Main {
                 }
             });
             
-            config.routes.sse("/events", client -> {
+            config.routes.sse("/checkinevents", client -> {
 
                 client.keepAlive(); 
 
@@ -81,8 +77,8 @@ public class Main {
         }).start(7070);
     }
 
-    public record CheckInRequest(String nick) {}
+    public record CheckInRequest(String nome) {}
 
-    public record IntChallenge(int resposta) {}
+    public record IntChallenge(String nick, int resposta) {}
 
 }
