@@ -39,8 +39,7 @@ public class Main {
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
                 if(users.keySet().contains(ctx.ip())) {
-                    System.out.println("Tentativa com IP duplicado! nome: " + req.nick() + " e IP: " + ctx.ip());
-                    ctx.result("tu já fez check-in macho");
+                    ctx.result("Tentativa com IP duplicado! nome: " + req.nick() + ", IP: " + ctx.ip());
                     return;
                 }
                 users.put(ctx.ip(), req.nick());
