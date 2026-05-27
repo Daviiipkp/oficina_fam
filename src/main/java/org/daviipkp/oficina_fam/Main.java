@@ -1,5 +1,7 @@
 package org.daviipkp.oficina_fam;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -12,7 +14,7 @@ import io.javalin.http.sse.SseClient;
 
 public class Main {
 
-    private static final Map<String, String> users = new ConcurrentHashMap<>();
+    private static final List<String> checkins = new ArrayList<>();
 
     private static final ConcurrentLinkedQueue<SseClient> sseClients = new ConcurrentLinkedQueue<>();
 
@@ -34,24 +36,19 @@ public class Main {
                 return forwardedFor != null ? forwardedFor.split(",")[0] : ctx.req().getRemoteAddr();
             };
             config.routes.get("/clear", ctx -> {
-                users.clear();
+                checkins.clear();
             });
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
-                users.put(ctx.ip(), req.nome());
+                checkins.add(req.nome());
                 sseClients.forEach((client) -> {
-                    client.sendEvent("users", users.values());
+                    client.sendEvent("users", checkins);
                 });
                 ctx.result("opa! check-in recebido :D");
             });
 
             config.routes.post("/galinha", ctx -> {
                 IntChallenge req = ctx.bodyAsClass(IntChallenge.class);
-                if(!users.keySet().contains(ctx.ip())) {
-                    ctx.result("tu não fez check-in!");
-                    return;
-                }
-                String user = users.get(ctx.ip());
                 if(req.resposta() == 13) {
                     ctx.result("boa! desafio concluído!");
                 }else{
@@ -63,7 +60,7 @@ public class Main {
 
                 client.keepAlive(); 
 
-                client.sendEvent("users", users.values());
+                client.sendEvent("users", checkins);
 
                 sseClients.add(client);
                 client.onClose(() -> {
