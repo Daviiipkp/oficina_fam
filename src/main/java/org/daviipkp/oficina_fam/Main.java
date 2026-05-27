@@ -39,6 +39,7 @@ public class Main {
             };
             config.routes.get("/clear", ctx -> {
                 checkins.clear();
+                abobora_winner = null;
             });
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
@@ -53,10 +54,10 @@ public class Main {
                 IntChallenge req = ctx.bodyAsClass(IntChallenge.class);
                 if((req.resposta() == 13 || req.resposta() == 13.0) && (abobora_winner == null)) {
                     ctx.result("boa! desafio concluído!");
-                    abobora_winner = req.nick();
+                    abobora_winner = req.nome();
                     for(SseClient c : sseClients) {
                         if(c.ctx().path().contains("abobora")) {
-                            c.sendEvent("winner", req.nick());
+                            c.sendEvent("winner", req.nome());
                         }
                     }
                 }else{
@@ -99,6 +100,6 @@ public class Main {
 
     public record CheckInRequest(String nome) {}
 
-    public record IntChallenge(String nick, int resposta) {}
+    public record IntChallenge(String nome, int resposta) {}
 
 }
