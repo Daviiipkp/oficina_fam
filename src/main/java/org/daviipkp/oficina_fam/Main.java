@@ -33,10 +33,13 @@ public class Main {
                 String forwardedFor = ctx.header("X-Forwarded-For");
                 return forwardedFor != null ? forwardedFor.split(",")[0] : ctx.req().getRemoteAddr();
             };
-
+            config.routes.get("/clear", ctx -> {
+                users.clear();
+            });
             config.routes.post("/checkin", ctx -> {
                 CheckInRequest req = ctx.bodyAsClass(CheckInRequest.class);
                 if(users.keySet().contains(ctx.ip())) {
+                    System.out.println("Tentativa com IP duplicado! nome: " + req.nick() + " e IP: " + ctx.ip());
                     ctx.result("tu já fez check-in macho");
                     return;
                 }
