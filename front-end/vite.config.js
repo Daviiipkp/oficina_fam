@@ -2,9 +2,8 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 import tailwindcss from '@tailwindcss/vite'
 
-// https://vite.dev/config/
 export default defineConfig({
-  base: './', 
+  base: '/absproxy/5173/', 
   plugins: [
     react(),
     tailwindcss(),
@@ -14,9 +13,9 @@ export default defineConfig({
     allowedHosts: ['code.daviipkp.org'],
     port: 5173,
     hmr: {
-      // Diz ao Vite para usar a porta HTTPS padrão do seu domínio e o caminho do proxy
+      protocol: 'wss',
       clientPort: 443, 
-      path: '/proxy/5173/', 
+      path: '/absproxy/5173/', 
     }
   }
 })
