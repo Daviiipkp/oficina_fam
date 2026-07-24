@@ -1,31 +1,32 @@
 ### A cool way of teaching web requisitions!
 
-there are some challenges coded that expect JSON object to be solved
+Basically, running this softwarem you will have some endpoints serving as challenges, expecting JSON formatted values. You should present them in a pretty way for people, making them have a feedback for their HTTP requests.
 
-### /melancia
-expects an object like
+## Endpoints (can be tested in the url https://oficina.daviipkp.org/):
 
+### POST /melancia
+
+expects
 {
   "nome": yourName
   "resposta": 1024
 }
 
-for it to be solved
 
+### POST /abobora
 
-### /abobora
 expects
-
 {
   "nome": yourName
   "resposta": 13
 }
 
  
-###/tomato 
+### POST /tomato 
+
 should be solved using
 
-response = requests.get("https:localhost:4500/tomate").json()
+response = requests.get("https://oficina.daviipkp.org/tomate").json()
 
 dados = {
     "nome": yourName,
@@ -33,4 +34,10 @@ dados = {
     "resposta": response["numero"]**2
 }
 
-code should send an server event to a front-end showing the winners for every challenge
+
+After solving any of the challenges, this back-end will send an event to everyone connected in the URLs
+https://oficina-viewer.daviipkp.org/<challenge>
+
+For example:
+You solved /melancia sending a post to https://oficina.daviipkp.org/melancia
+You can visualize the result of if accessing https://oficina-viewer.daviipkp.org/melancia
